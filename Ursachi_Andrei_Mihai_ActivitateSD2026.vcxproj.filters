@@ -18,5 +18,8 @@
     <ClCompile Include="lucruSaptamana1.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="incercareListaS.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
