@@ -48,6 +48,43 @@ Nod* inserareSfarsit(Nod* cap, Masina masina) {
 	return cap;
 }
 
+Nod* inserareInceput(Nod* cap, Masina masina) {
+	Nod* nou = creareNod(masina, cap);
+	return nou;
+}
+
+void afisareMasina(Masina masina) {
+	printf("Masina %s are %d portiere. \n", masina.marca, masina.nrUsi);
+}
+
+void afisareListaMasini(Nod* cap) {
+	while (cap) {
+		afisareMasina(cap->info);
+		cap = cap->next;
+	}
+}
+
+void stergereLista(Nod* cap) {
+	while (cap) {
+		Nod* aux = cap;
+		cap = cap->next;
+		free(aux->info.marca);
+		free(aux);
+	}
+	return cap;
+}
+
 void main() {
+	Masina masina = initializare("volvo", 5);
+	Nod* node = creareNod(masina, NULL);
+	Nod* cap = NULL;
+	cap = inserareSfarsit(cap, initializare("Mercedes", 5));
+	cap = inserareSfarsit(cap, initializare("BMW", 2));
+	cap = inserareSfarsit(cap, initializare("Dacia", 6));
+	cap = inserareSfarsit(cap, initializare("KIA", 3));
+
+	afisareListaMasini(cap);
+	cap = inserareInceput(cap, initializare("Renault", 5));
+	afisareListaMasini(cap);
 
 }
