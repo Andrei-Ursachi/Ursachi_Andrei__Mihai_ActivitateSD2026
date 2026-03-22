@@ -21,5 +21,8 @@
     <ClCompile Include="incercareListaS.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="repetitii.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
