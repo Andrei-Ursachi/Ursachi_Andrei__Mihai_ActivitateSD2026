@@ -24,5 +24,8 @@
     <ClCompile Include="repetitii.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="lucruStivaCoada.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
