@@ -27,5 +27,8 @@
     <ClCompile Include="lucruStivaCoada.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="lucruHashTable.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
