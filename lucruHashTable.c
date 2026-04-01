@@ -27,7 +27,7 @@ struct HashTable {
 Avion initializare(const char* model, int nrPasageri, float greutate) {
 	Avion avion;
 	avion.model = (char*)malloc(sizeof(char) * (strlen(model) + 1));
-	strcpy(avion.model, model);
+	strcpy_s(avion.model, strlen(model) + 1,model);
 	avion.nrPasageri = nrPasageri;
 	avion.greutate = greutate;
 	return avion;
@@ -63,4 +63,68 @@ void inserareSfarsit(Nod** cap, Avion avion) {
 		}
 		aux->next = nou;
 	}
+}
+
+//creare tabela hash
+HashTable initializareHash(int size) {
+	HashTable table;
+	table.dimensiune = size;
+	table.vector = (Nod**)malloc(sizeof(Nod*) * size);
+	for (int i = 0; i < size; i++) {
+		table.vector[i] = NULL;
+	}
+	return table;
+}
+
+int hash(int dim, int nrStudenti) {
+	return nrStudenti % dim;
+}
+
+//functie de inserare in tabela hash
+void inserareTabelaHash(HashTable table, Avion avion) {
+	if (table.dimensiune > 0) {
+		int poz = hash(table.dimensiune, avion.nrPasageri);
+		if (poz >= 0 && poz < table.dimensiune) {
+			inserareSfarsit(&(table.vector[poz]), avion);
+		}
+	}
+}
+
+//functie de afisarea tabelei hash
+void afisareTabelaHash(HashTable table) {
+	for (int i = 0; i < table.dimensiune; i++) {
+		printf("\nPozitia %d", i);
+		printf(": ");
+		afisareListaAvioane(table.vector[i]);
+	}
+}
+
+//functie pentru dezalocarea memoriei aferente 
+void dezalocareLista(Nod** cap) {
+	while ((*cap) != NULL) {
+		free((*cap)->info.model);
+		Nod* copie = *cap;
+		*cap = (*cap)->next;
+		free(copie);
+	}
+}
+
+//dezalocare memorie alocata tabelei hash
+void dezalocareHash(HashTable table) {
+	for (int i = 0; i < table.dimensiune; i++) {
+		dezalocareLista(&(table.vector[i]));
+	}
+	free(table.vector);
+}
+
+void main() {
+	HashTable table1 = initializareHash(4);
+	inserareTabelaHash(table1, initializare("A320", 300, 420.6));
+	inserareTabelaHash(table1, initializare("A330", 111, 40.6));
+	inserareTabelaHash(table1, initializare("A3440", 222, 4210.6));
+	inserareTabelaHash(table1, initializare("A3220", 333, 5000.6));
+
+	afisareTabelaHash(table1);
+
+	dezalocareHash(table1);
 }
