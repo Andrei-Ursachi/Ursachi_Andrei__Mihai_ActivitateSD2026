@@ -34,3 +34,10 @@ Bere initializare(const char* marca, int cantitate, float volumAcool) {
 void afisareBere(Bere bere) {
 	printf("Berea %s vine in recipient de %d mililitrii si are un volum de alcool de %.2f", bere.marca, bere.cantitate, bere.volumAcool);
 }
+
+void afisareListaBere(Nod* cap) {
+	while (cap != NULL) {
+		afisareBere(cap->info);
+		cap = cap->next;
+	}
+}
