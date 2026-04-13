@@ -33,5 +33,13 @@
     <ClCompile Include="lucruHashTable2.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="lucruHeap1.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="suportHeap1.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
