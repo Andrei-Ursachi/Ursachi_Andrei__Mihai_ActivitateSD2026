@@ -1,7 +1,7 @@
 6
-5 mancare 500
-3 utilitati 700
-8 divertisment 400
-4 impozite 900
-9 haine 300
-7 transport 200
+5 Andrei 500
+3 Maria 700
+8 George 400
+4 Elena 900
+9 Vlad 300
+7 Ioana 200
