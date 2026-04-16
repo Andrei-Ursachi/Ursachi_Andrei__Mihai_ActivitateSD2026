@@ -36,6 +36,9 @@
     <ClCompile Include="lucruHeap1.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="lucruABC.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="suportHeap1.txt">
