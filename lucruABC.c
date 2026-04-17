@@ -32,3 +32,51 @@ nodArb* creareNod(produs p, nodArb* stanga, nodArb* dreapta) {
 	nou->dreapta = dreapta;
 	return nou;
 }
+
+//functie pt inserare in arbore, ca regula ar fi daca id la produs inserat e mai mic decat id din nod curent => inserez in stanga
+//daca e mai mare inserez in dreapta si daca e egal inseamna ca am duplicat
+nodArb* inserareNod(nodArb* rad, produs p) {
+	if (rad != NULL) {
+		if (p.id < rad->info.id) {
+			rad->stanga = inserareNod(rad->stanga, p);
+			return rad;
+		}
+		else if(p.id > rad->info.id){
+			rad->dreapta = inserareNod(rad->dreapta, p);
+			return rad;
+		}
+		else {
+			return rad;
+		}
+	}
+	else {
+		return creareNod(p, NULL, NULL);
+	}
+}
+
+//trebuie sa imi fac o functie de ordine radacina->stanga->dreapta
+void preOrdine(nodArb* rad) {
+	if (rad != NULL) {
+		printf("\nCod=%d, Denumire=%s, Stoc=%d, Pret=%5.2f", rad->info.id, rad->info.denumire, rad->info.stoc, rad->info.pret);
+		preOrdine(rad->stanga);
+		preOrdine(rad->dreapta);
+	}
+}
+
+//inca una dar de data asta cu ordine stanga->radacina->dreapta
+void inOrdine(nodArb* rad) {
+	if (rad != NULL) {
+		inOrdine(rad->stanga);
+		printf("\nCod=%d, Denumire=%s, Stoc=%d, Pret=%5.2f", rad->info.id, rad->info.denumire, rad->info.stoc, rad->info.pret);
+		inOrdine(rad->dreapta);
+	}
+}
+
+//si ultima in ordine stanga->dreapta->radacina
+void postOrdine(nodArb* rad) {
+	if (rad != NULL) {
+		postOrdine(rad->stanga);
+		postOrdine(rad->dreapta);
+		printf("\nCod=%d, Denumire=%s, Stoc=%d, Pret=%5.2f", rad->info.id, rad->info.denumire, rad->info.stoc, rad->info.pret);
+	}
+}

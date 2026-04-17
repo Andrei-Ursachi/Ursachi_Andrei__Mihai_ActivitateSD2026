@@ -44,5 +44,8 @@
     <Text Include="suportHeap1.txt">
       <Filter>Source Files</Filter>
     </Text>
+    <Text Include="suportLucruABC.txt">
+      <Filter>Source Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

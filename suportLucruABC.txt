@@ -1,0 +1,7 @@
+6
+10 Laptop 5 3500
+7 Mouse 20 80
+15 Tastatura 12 150
+3 Monitor 8 900
+9 Boxe 25 120
+20 Imprimanta 4 600
