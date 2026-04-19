@@ -80,3 +80,54 @@ void postOrdine(nodArb* rad) {
 		printf("\nCod=%d, Denumire=%s, Stoc=%d, Pret=%5.2f", rad->info.id, rad->info.denumire, rad->info.stoc, rad->info.pret);
 	}
 }
+
+//dezalocare arbore
+void dezalocare(nodArb* rad) {
+	if (rad != NULL) {
+		dezalocare(rad->stanga);
+		dezalocare(rad->dreapta);
+		free(rad->info.denumire);
+		free(rad);
+	}
+}
+
+//functie de numarare a produselor care sunt mai mari decat un prag anume
+void nrProduseStoc(nodArb* rad, int* nr, int prag) {
+	if (rad != NULL) {
+		if (rad->info.stoc > prag) {
+			(*nr)++;
+			nrProduseStoc(rad->stanga, nr, prag);
+			nrProduseStoc(rad->dreapta, nr, prag);
+		}
+	}
+}
+
+//salvare in vector a nodurilor frunza care au pret mai mare decat un prag anume
+void salvareProduse(nodArb* rad, produs* vect, int* nr, float pretPrag) {
+	if (rad != NULL) {
+		if (rad->stanga == NULL && rad->dreapta == NULL && rad->info.pret > pretPrag) {
+			vect[*nr].id = rad->info.id;
+			vect[*nr].denumire = (char*)malloc((strlen(rad->info.denumire) + 1) * sizeof(char));
+			strcpy_s(vect[*nr].denumire, strlen(rad->info.denumire, rad->info.denumire);
+			vect[*nr].stoc = rad->info.stoc;
+			vect[*nr].pret = rad->info.pret;
+			(*nr)++;
+		}
+		salvareProduse(rad->stanga, vect, nr, pretPrag);
+		salvareProduse(rad->dreapta, vect, nr, pretPrag);
+	}
+}
+
+//functie de cautat max dintre 2 valori
+int maxim(int a, int b) {
+	int max = a;
+	if (max < b) {
+		max = b;
+	}
+	return max;
+}
+
+
+void main() {
+
+}
