@@ -108,7 +108,7 @@ void salvareProduse(nodArb* rad, produs* vect, int* nr, float pretPrag) {
 		if (rad->stanga == NULL && rad->dreapta == NULL && rad->info.pret > pretPrag) {
 			vect[*nr].id = rad->info.id;
 			vect[*nr].denumire = (char*)malloc((strlen(rad->info.denumire) + 1) * sizeof(char));
-			strcpy_s(vect[*nr].denumire, strlen(rad->info.denumire, rad->info.denumire);
+			strcpy_s(vect[*nr].denumire, strlen(rad->info.denumire) + 1, rad->info.denumire);
 			vect[*nr].stoc = rad->info.stoc;
 			vect[*nr].pret = rad->info.pret;
 			(*nr)++;
@@ -127,7 +127,74 @@ int maxim(int a, int b) {
 	return max;
 }
 
+//o functie pt a afla inaltimea arborelui
+int inaltimeArb(nodArb* rad) {
+	if (rad != NULL) {
+		return 1 + maxim(inaltimeArb(rad->stanga), inaltimeArb(rad->dreapta));
+	}
+	else {
+		return 0;
+	}
+}
+
 
 void main() {
+	nodArb* rad = NULL;
+	produs p;
+	int nrProduse;
+	char buffer[30];
+	FILE* f = fopen("suportLucruABC.txt", "r");
+	if (f == NULL) {
+		printf("Fisierul nu exista");
+		return 0;
+	}
+
+	fscanf(f, "%d", &nrProduse);
+	for (int i = 0; i < nrProduse; i++) {
+		fscanf(f, "%d", &p.id);
+		fscanf(f, "%s", buffer);
+		p.denumire = (char*)malloc((strlen(buffer) + 1) * sizeof(char));
+		strcpy_s(p.denumire, strlen(buffer) + 1, buffer);
+		fscanf(f, "%d", &p.stoc);
+		fscanf(f, "%d", &p.pret);
+		rad = inserareNod(rad, p);
+		free(p.denumire);
+	}
+	fclose(f);
+
+	printf("-------aici preordine-------");
+	preOrdine(rad);
+	printf("\n");
+
+	printf("-------aici inordine-------");
+	inOrdine(rad);
+	printf("\n");
+
+	printf("-------aici postordine-------");
+	postOrdine(rad);
+	printf("\n");
+
+	int nr = 0;
+	nrProduseStoc(rad, &nr, 10);
+	printf("\nNumar produse cu stoc > 10 = %d", nr);
+	printf("\n");
+
+	produs* vect = (produs*)malloc(nrProduse * sizeof(produs));
+	int nrP = 0;
+
+	salvareProduse(rad, vect, &nrP, 50);
+
+	for (int i = 0; i < nrP; i++){
+		printf("\nCod=%d, Denumire=%s, Stoc=%d, Pret=%5.2f",
+			vect[i].id, vect[i].denumire, vect[i].stoc, vect[i].pret);
+	}
+
+	for (int i = 0; i < nrP; i++) {
+		free(vect[i].denumire);
+	}
+	free(vect);
+
+	printf("\ninaltime arbore = %d", inaltimeArb(rad));
+	dezalocare(rad);
 
 }
