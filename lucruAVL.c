@@ -17,7 +17,7 @@ struct StructuraMasina {
 };
 typedef struct StructuraMasina Masina;
 
-//creare structura pentru un nod dintr-un arbore binar de cautare
+//creare structura pentru un nod dintr-un arbore binar de echilibrare
 struct Nod {
 	Masina info;
 	struct Nod* stanga;
@@ -34,7 +34,7 @@ Masina citireMasinaDinFisier(FILE* file) {
 	aux = strtok(buffer, sep);
 	m1.id = atoi(aux);
 	m1.nrUsi = atoi(strtok(NULL, sep));
-	m1.pret= atof(strtok(NULL, sep));
+	m1.pret = atof(strtok(NULL, sep));
 	aux = strtok(NULL, sep);
 	m1.model = malloc(strlen(aux) + 1);
 	strcpy_s(m1.model, strlen(aux) + 1, aux);
@@ -56,6 +56,41 @@ void afisareMasina(Masina masina) {
 	printf("Serie: %c\n\n", masina.serie);
 }
 
+Masina initMasina(int id, int nrUsi, float pret, const char* model, const char* numeSofer, unsigned char serie) {
+	Masina m;
+	m.id = id;
+	m.nrUsi = nrUsi;
+	m.pret = pret;
+	m.serie = serie;
+	m.model = (char*)malloc(strlen(model) + 1);
+	strcpy_s(m.model, strlen(model) + 1, model);
+	m.numeSofer = (char*)malloc(strlen(numeSofer) + 1);
+	strcpy_s(m.numeSofer, strlen(numeSofer) + 1, numeSofer);
+	return m;
+}
+
+int calculDiferentaInaltimi(Nod* rad) {
+	if (rad) {
+		return calculeazaInaltimeArbore(rad->stanga) - calculeazaInaltimeArbore(rad->dreapta);
+	}
+	else {
+		return 0;
+	}
+}
+
+void rotireLaStanga(Nod** rad) {
+	Nod* aux = (*rad)->dreapta;
+	(*rad)->dreapta = aux->stanga;
+	aux->stanga = (*rad);
+	(*rad) = aux;
+}
+
+void rotireLaDreapta(Nod** rad) {
+	Nod* aux = (*rad)->stanga;
+	(*rad)->stanga = aux->dreapta;
+	aux->dreapta = (*rad);
+	(*rad) = aux;
+}
 
 void adaugaMasinaInArbore(Nod** rad, Masina masinaNoua) {
 	//adauga o noua masina pe care o primim ca parametru in arbore,
@@ -70,11 +105,29 @@ void adaugaMasinaInArbore(Nod** rad, Masina masinaNoua) {
 	}
 	else {
 		if ((*rad)->info.id > masinaNoua.id) {
-			adaugaMasinaInArbore(&(*rad)->stanga, masinaNoua);
+			adaugaMasinaInArbore(&((*rad)->stanga), masinaNoua);
 		}
 		if ((*rad)->info.id < masinaNoua.id) {
-			adaugaMasinaInArbore(&(*rad)->dreapta, masinaNoua);
+			adaugaMasinaInArbore(&((*rad)->dreapta), masinaNoua);
 		}
+	}
+
+	int diferentaInaltimi = calculDiferentaInaltimi(*rad);
+	if (diferentaInaltimi == 2) {
+		//dezechilibru pe stanga
+		if (calculDiferentaInaltimi((*rad)->stanga) == -1) {
+			rotireLaStanga(&(*rad)->stanga);
+		}
+		rotireLaDreapta(rad);
+
+	}
+	if (diferentaInaltimi == -2) {
+		//dezechilibru pe dreapta
+		if (calculDiferentaInaltimi((*rad)->dreapta) == 1) {
+			rotireLaDreapta(&(*rad)->dreapta);
+		}
+		rotireLaStanga(rad);
+		
 	}
 }
 
@@ -89,7 +142,7 @@ Nod* citireArboreDeMasiniDinFisier(const char* numeFisier) {
 			Masina m = citireMasinaDinFisier(f);
 			adaugaMasinaInArbore(&rad, m);
 		}
-		
+
 	}
 	fclose(f);
 	return rad;
@@ -107,7 +160,7 @@ void afisareMasiniDinArbore(Nod* rad) {
 	if (rad) {
 		afisareMasiniDinArbore(rad->stanga);
 		afisareMasina(rad->info);
-		afisareMasiniDinArbore(rad->stanga);
+		afisareMasiniDinArbore(rad->dreapta);
 	}
 }
 
@@ -115,7 +168,7 @@ void afisarePreordine(Nod* rad) {
 	if (rad) {
 		afisareMasina(rad->info);
 		afisarePreordine(rad->stanga);
-		afisarePreordine(rad->stanga);
+		afisarePreordine(rad->dreapta);
 	}
 }
 
@@ -135,19 +188,18 @@ void dezalocareArboreDeMasini(Nod** rad) {
 Masina getMasinaByID(Nod* rad, int id) {
 	Masina m;
 	m.id = -1;
-	if(rad) {
+	if (rad) {
 		if (rad->info.id == id) {
 			m = rad->info;
 			m.model = malloc(sizeof(char) * (strlen(rad->info.model) + 1));
-			strcpy_s(m.model, strlen(rad->info.model) + 1,rad->info.model);
+			strcpy_s(m.model, strlen(rad->info.model) + 1, rad->info.model);
 
 			m.numeSofer = malloc(sizeof(char) * (strlen(rad->info.numeSofer) + 1));
-			strcpy_s(m.model, strlen(rad->info.numeSofer) + 1, rad->info.numeSofer);
+			strcpy_s(m.numeSofer, strlen(rad->info.numeSofer) + 1, rad->info.numeSofer);
 		}
 		if (id < rad->info.id) {
 			m = getMasinaByID(rad->stanga, id);
 		}
-
 		if (id > rad->info.id) {
 			m = getMasinaByID(rad->dreapta, id);
 		}
@@ -199,20 +251,23 @@ float calculeazaPretulMasinilorUnuiSofer(Nod* rad, const char* numeSofer) {
 }
 
 int main() {
-	Nod* rad = citireArboreDeMasiniDinFisier("suportLucruABC2.txt");
+	Nod* rad = NULL;	
+	adaugaMasinaInArbore(&rad, initMasina(1, 4, 5000, "Lexus", "Ion", 'L'));
+	adaugaMasinaInArbore(&rad, initMasina(2, 4, 7000, "Skoda", "Gica", 'S'));
+	adaugaMasinaInArbore(&rad, initMasina(3, 4, 10000, "BMW", "Gigel", 'B'));
+	adaugaMasinaInArbore(&rad, initMasina(4, 4, 9000, "Audi", "Vasile", 'C'));
+	adaugaMasinaInArbore(&rad, initMasina(5, 4, 8000, "Dacia", "Mirel", 'D'));
 	afisarePreordine(rad);
 
 	printf("Masina cautata: \n");
-	afisareMasina(getMasinaByID(rad, 10));
+	afisareMasina(getMasinaByID(rad, 4));
 
 	printf("Numar noduri: %d \n", determinaNumarNoduri(rad));
 
 	printf("Inaltime arbore: %d \n", calculeazaInaltimeArbore(rad));
 	printf("Pret total: %.2f \n", calculeazaPretTotal(rad));
-	printf("Suma preturilor masinilor unui sofer: %.2f \n", calculeazaPretulMasinilorUnuiSofer(rad, "Ionescu"));
+	printf("Suma preturilor masinilor unui sofer: %.2f \n", calculeazaPretulMasinilorUnuiSofer(rad, "Ionel"));
 
 	dezalocareArboreDeMasini(&rad);
-
-
 	return 0;
 }

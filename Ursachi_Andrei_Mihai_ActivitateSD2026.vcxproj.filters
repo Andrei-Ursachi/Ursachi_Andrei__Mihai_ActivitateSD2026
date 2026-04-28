@@ -45,6 +45,12 @@
     <ClCompile Include="lucruABC2.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="lucruAVL.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lucruGrafuri.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="suportHeap1.txt">
@@ -54,6 +60,9 @@
       <Filter>Source Files</Filter>
     </Text>
     <Text Include="suportLucruHeap2.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="suportLucruABC2.txt">
       <Filter>Source Files</Filter>
     </Text>
   </ItemGroup>
