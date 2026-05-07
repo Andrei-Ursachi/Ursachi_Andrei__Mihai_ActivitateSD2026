@@ -16,7 +16,7 @@ typedef struct Camion Camion;
 struct Nod {
 	Camion info;
 	struct Nod* stanga;
-	struct Nod* stanga;
+	struct Nod* dreapta;
 };
 typedef struct Nod Nod;
 
@@ -50,5 +50,36 @@ void afisareCamion(Camion camion) {
 }
 
 void adaugareInArbore(Nod** rad, Camion camionNou) {
+	if (*rad == NULL) {
+		Nod* nod = malloc(sizeof(Nod));
+		nod->info = camionNou;
+		nod->stanga = NULL;
+		nod->stanga = NULL;
+		*rad = nod;
+	}
+	else {
+		if ((*rad)->info.idCamion > camionNou.idCamion) {
+			adaugareInArbore(&(*rad)->stanga, camionNou);
+		}
+		if ((*rad)->info.idCamion < camionNou.idCamion) {
+			adaugareInArbore(&(*rad)->dreapta, camionNou);
+		}
+	}
+}
+
+Nod* citireArboreDinFisier(const char* numeFisier) {
+	Nod* rad = NULL;
+	FILE* f = fopen(numeFisier, "r");
+	if (f) {
+		while (!feof(f)) {
+			Camion c = citireMasinaDinFisier(f);
+			adaugareInArbore(&rad, m);
+		}
+	}
+	fclose(f);
+	return rad;
+}
+
+void main() {
 
 }
