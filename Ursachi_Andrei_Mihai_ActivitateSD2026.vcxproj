@@ -163,6 +163,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="suportLucruABC2.txt" />
+    <Text Include="suportLucruABC3.txt" />
     <Text Include="suportLucruHeap2.txt" />
     <Text Include="suportHeap1.txt">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>

@@ -1,0 +1,6 @@
+1,45,300,numar1,abcd,500000
+2,100,500,numar2,dabc,123123
+3,50,310,numar3,cadb,2334
+4,70,400,numar4,dbca,90887
+5,90,475,numar5,cbda,23235
+6,200,111,numar6,bacd,56644

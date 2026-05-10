@@ -107,7 +107,7 @@ void afisareMasiniDinArbore(Nod* rad) {
 	if (rad) {
 		afisareMasiniDinArbore(rad->stanga);
 		afisareMasina(rad->info);
-		afisareMasiniDinArbore(rad->stanga);
+		afisareMasiniDinArbore(rad->dreapta);
 	}
 }
 
@@ -115,7 +115,7 @@ void afisarePreordine(Nod* rad) {
 	if (rad) {
 		afisareMasina(rad->info);
 		afisarePreordine(rad->stanga);
-		afisarePreordine(rad->stanga);
+		afisarePreordine(rad->dreapta);
 	}
 }
 
@@ -142,7 +142,7 @@ Masina getMasinaByID(Nod* rad, int id) {
 			strcpy_s(m.model, strlen(rad->info.model) + 1,rad->info.model);
 
 			m.numeSofer = malloc(sizeof(char) * (strlen(rad->info.numeSofer) + 1));
-			strcpy_s(m.model, strlen(rad->info.numeSofer) + 1, rad->info.numeSofer);
+			strcpy_s(m.numeSofer, strlen(rad->info.numeSofer) + 1, rad->info.numeSofer);
 		}
 		if (id < rad->info.id) {
 			m = getMasinaByID(rad->stanga, id);
