@@ -132,7 +132,9 @@
     <ClCompile Include="lucruABC2.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="lucruABC3.c" />
+    <ClCompile Include="lucruABC3.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="lucruAVL2.c" />
     <ClCompile Include="lucruGrafuri.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -165,6 +167,7 @@
   <ItemGroup>
     <Text Include="suportLucruABC2.txt" />
     <Text Include="suportLucruABC3.txt" />
+    <Text Include="suportLucruAVL2.txt" />
     <Text Include="suportLucruHeap2.txt" />
     <Text Include="suportHeap1.txt">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>

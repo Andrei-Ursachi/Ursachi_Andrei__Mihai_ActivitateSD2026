@@ -74,5 +74,8 @@
     <Text Include="suportLucruABC3.txt">
       <Filter>Source Files</Filter>
     </Text>
+    <Text Include="suportLucruAVL2.txt">
+      <Filter>Source Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

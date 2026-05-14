@@ -1,0 +1,4 @@
+25, Preciziei - Berceni, 5, 17
+32, Barbu vacarescu - Pantelimon, 6, 21
+41, Republica - Titan, 3, 32
+105, Centru - Bragadiru, 3, 55
