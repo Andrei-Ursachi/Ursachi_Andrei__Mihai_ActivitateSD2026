@@ -41,3 +41,79 @@ void afisareTramvai(Tramvai tramvai) {
 	printf("Pret: %.2f\n", tramvai.pretBilet);
 	printf("Model: %s\n", tramvai.traseu);
 }
+
+Tramvai initializareTramvai(int numar, const char* traseu, float pretBilet, int nrStatii) {
+	Tramvai t;
+	t.numar = numar;
+	t.pretBilet = pretBilet;
+	t.nrStatii = nrStatii;
+	t.traseu = (char*)malloc(strlen(traseu) + 1);
+	strcpy_s(t.traseu, strlen(traseu) + 1, traseu);
+	return t;
+}
+
+int maxim(int a, int b) {
+	return (a > b ? a : b);
+}
+
+int calcInaltimeArbore(Nod* rad) {
+	if (rad) {
+		return maxim(calcInaltimeArbore(rad->stanga), calcInaltimeArbore(rad->dreapta)) + 1;
+	}
+	return 0;
+}
+
+int diferentaInaltimeArbore(Nod* rad) {
+	if (rad) {
+		return calcInaltimeArbore(rad->stanga) - calcInaltimeArbore(rad->dreapta);
+	}
+	else {
+		return 0;
+	}
+}
+
+void rotireStanga(Nod** rad) {
+	Nod* aux = (*rad)->dreapta;
+	aux->dreapta = aux->stanga;
+	aux->stanga = (*rad);
+	(*rad) = aux;
+}
+
+void rotireDreapta(Nod** rad) {
+	Nod* aux = (*rad)->stanga;
+	aux->stanga = aux->dreapta;
+	aux->dreapta = (*rad);
+	(*rad) = aux;
+}
+
+void adaugaTramvaiInArbore(Nod** rad, Tramvai tramvaiNou) {
+	if (*rad == NULL) {
+		Nod* nod = malloc(sizeof(Nod));
+		nod->info = tramvaiNou;
+		nod->dreapta = NULL;
+		nod->stanga = NULL;
+		*rad = nod;
+	}
+	else {
+		if ((*rad)->info.numar > tramvaiNou.numar) {
+			adaugaTramvaiInArbore(&((*rad)->stanga), tramvaiNou);
+		}
+		if ((*rad)->info.numar < tramvaiNou.numar) {
+			adaugaTramvaiInArbore(&((*rad)->dreapta), tramvaiNou);
+		}
+	}
+
+	int diferentaInaltimi = calcInaltimeArbore(*rad);
+	if (diferentaInaltimeArbore == 2) {
+		if (calcInaltimeArbore((*rad)->stanga) == -1) {
+			rotireStanga(&(*rad)->stanga);
+		}
+		rotireDreapta(rad);
+	}
+	if (diferentaInaltimeArbore == -2) {
+		if (calcInaltimeArbore((*rad)->dreapta) == 1) {
+			rotireDreapta(&(*rad)->dreapta);
+		}
+		rotireStanga(rad);
+	}
+}
